@@ -1,0 +1,17 @@
+<h2>Listado de Artículos</h2>
+
+<div class="search">
+  <label for="titulo">Título</label>
+    <input type="text" id="titulo" [(ngModel)]="query"/>
+    <button type="button" (click)="buscarArticulo(query)">Buscar</button>
+</div>
+
+@if (resultado(); as xml) {
+  <section class="card">
+    <header class="card-header">
+      <h3>Respuesta XML</h3>
+    </header>
+
+    <pre class="xml">{{ xml }}</pre>
+  </section>
+}
