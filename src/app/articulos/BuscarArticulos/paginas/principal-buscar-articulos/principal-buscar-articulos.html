@@ -2,16 +2,48 @@
 
 <div class="search">
   <label for="titulo">Título</label>
-    <input type="text" id="titulo" [(ngModel)]="query"/>
-    <button type="button" (click)="buscarArticulo(query)">Buscar</button>
+  <input type="text" id="titulo" [(ngModel)]="query"/>
+  <button type="button" (click)="buscarArticulo(query)">Buscar</button>
 </div>
 
-@if (resultado(); as xml) {
-  <section class="card">
-    <header class="card-header">
-      <h3>Respuesta XML</h3>
-    </header>
+@if (resultado(); as data) {
 
-    <pre class="xml">{{ xml }}</pre>
-  </section>
+  @if(data.Response){
+
+    <div class="Articulo">
+
+      <section class="card">
+
+        <header class="card-header">
+          <h3>Artículos encontrados de {{ query }}</h3>
+        </header>
+
+        @for(articulos_encotrados of data.entries; track articulos_encotrados.id){
+          <div class="datos">
+            <h2>{{ articulos_encotrados.title }}</h2>
+            <p><strong>Autores:</strong>
+              {{ articulos_encotrados.authors}}
+            </p>
+            <p>{{ articulos_encotrados.summary}}</p>
+            <a [href]="articulos_encotrados.id" target="_blank">
+              Ver artículo
+            </a>
+          </div>
+        }
+      </section>
+
+    </div>
+
+  } @else {
+
+    <div class="error-msg">
+      <p>{{ data.Error }}</p>
+    </div>
+
+  }
+
+} @else {
+
+  <p>Realiza una búsqueda para ver resultados.</p>
+
 }
