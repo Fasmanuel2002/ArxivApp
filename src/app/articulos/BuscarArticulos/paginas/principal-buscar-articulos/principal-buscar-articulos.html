@@ -4,6 +4,7 @@
   <label for="titulo">Título</label>
   <input type="text" id="titulo" [(ngModel)]="query"/>
   <button type="button" (click)="buscarArticulo(query)">Buscar</button>
+  <button routerLink="/">Volver</button>
 </div>
 
 @if (resultado(); as data) {
@@ -28,6 +29,7 @@
             <a [href]="articulos_encotrados.id" target="_blank">
               Ver artículo
             </a>
+            <button type="button" (click)="toggleFavortito(articulos_encotrados)">AnadirFavorito</button>
           </div>
         }
       </section>

@@ -3,18 +3,22 @@ import { ArxivService } from '../../servicios/arxiv-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ArxivOut, ArxivSuccess, ResultadoConsultaArXiv } from '../../interfaces/arxiv-input';
+import { RouterLink } from '@angular/router';
+import { FavoritosService } from '../../../ArticulosFavoritos/favoritos-service';
 
 @Component({
   selector: 'app-principal-buscar-articulos',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './principal-buscar-articulos.html',
   styleUrl: './principal-buscar-articulos.css',
 })
 export class PrincipalBuscarArticulos {
   
   _ArxivService = inject(ArxivService)
+  _FavoritosArticulosService = inject(FavoritosService)
   query = ''
   resultado = signal<ResultadoConsultaArXiv | null> (null)
+  
 
   buscarArticulo(query: string) {
   this._ArxivService.buscarArticulos(query).subscribe(
@@ -24,6 +28,13 @@ export class PrincipalBuscarArticulos {
     this.query = '';
     }
   );
+
+  
 }
+
+  toggleFavortito(articulo : ArxivOut){
+    this._FavoritosArticulosService.addArticuloFavorito(articulo)
+  }
+
 
 }
