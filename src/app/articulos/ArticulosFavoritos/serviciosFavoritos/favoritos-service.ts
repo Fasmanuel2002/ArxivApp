@@ -1,6 +1,6 @@
 import { effect, Injectable, signal } from '@angular/core';
-import { environment } from '../../../enviroments/environment.development';
-import { ArxivOut, ArxivSuccess } from '../BuscarArticulos/interfaces/arxiv-input';
+import { environment } from '../../../../enviroments/environment.development';
+import { ArxivOut, ArxivSuccess } from '../../BuscarArticulos/interfaces/arxiv-input';
 import { isPlatformBrowser } from '@angular/common';
 import { inject, PLATFORM_ID } from '@angular/core';
 

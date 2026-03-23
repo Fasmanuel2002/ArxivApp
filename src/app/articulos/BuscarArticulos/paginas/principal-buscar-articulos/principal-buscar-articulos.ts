@@ -4,8 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ArxivOut, ArxivSuccess, ResultadoConsultaArXiv } from '../../interfaces/arxiv-input';
 import { RouterLink } from '@angular/router';
-import { FavoritosService } from '../../../ArticulosFavoritos/favoritos-service';
-
+import { FavoritosService } from '../../../ArticulosFavoritos/serviciosFavoritos/favoritos-service';
 @Component({
   selector: 'app-principal-buscar-articulos',
   imports: [FormsModule, CommonModule, RouterLink],

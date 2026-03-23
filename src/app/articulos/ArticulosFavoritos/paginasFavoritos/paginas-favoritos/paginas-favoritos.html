@@ -1,0 +1,14 @@
+<h2>Articulos Favoritos</h2>
+<button routerLink="/">Volver</button>
+
+@for (articulo of _FavoritosArticulosService.ArticulosFavoritos(); track articulo.id){
+    <div>
+    <h3>{{ articulo.title }}</h3>
+    <p>{{ articulo.summary }}</p>
+
+    <button (click)="removeFavoritoArticulo(articulo.id)">
+      Eliminar
+    </button>
+    
+  </div>
+}
