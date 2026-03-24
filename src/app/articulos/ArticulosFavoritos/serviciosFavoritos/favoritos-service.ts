@@ -3,6 +3,7 @@ import { environment } from '../../../../enviroments/environment.development';
 import { ArxivOut, ArxivSuccess } from '../../BuscarArticulos/interfaces/arxiv-input';
 import { isPlatformBrowser } from '@angular/common';
 import { inject, PLATFORM_ID } from '@angular/core';
+import { disconnect } from 'node:process';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class FavoritosService {
   ArticulosFavoritos = signal<ArxivOut[]> (this.cargarArticulos())
 
   private cargarArticulos(){
-    if (!isPlatformBrowser(this._platformId)) return; 
+    if (!isPlatformBrowser(this._platformId)) return []; 
     const articulos = localStorage.getItem(environment.STORAGE_KEY)
     return articulos ? JSON.parse(articulos) : []
   }
@@ -32,6 +33,21 @@ export class FavoritosService {
     this.ArticulosFavoritos.update(listaActualArticulos => 
       listaActualArticulos.filter(articulo => articulo.id !== query)
     )
+  }
+
+  download(){
+    const favoritosArticulos = this.ArticulosFavoritos()
+
+    const json = JSON.stringify(favoritosArticulos)
+    
+    const enlace = document.createElement('a')
+
+    enlace.href = "data:application/json;charset=utf-8" + encodeURIComponent(json)
+    
+    enlace.download = "favoritos.json";
+
+    enlace.click();
+  
   }
 
 }

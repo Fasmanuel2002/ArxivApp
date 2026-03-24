@@ -18,11 +18,11 @@ export class ArxivService {
   buscarArticulos(query: string): Observable<ArxivSuccess> {
 
     const params = new HttpParams()
-      .set('search_query', `all:${query}`)
+      .set('search_query', `(ti:${query} OR abs:${query})`)
       .set('start', 0)
       .set('max_results', 10)
       .set('sortBy', 'relevance')
-      .set('sortOrder', 'ascending')
+      .set('sortOrder', 'descending')
 
     return this.httpClient
   .get(environment.arxivQueryUrl, { params, responseType: 'text' }).pipe(

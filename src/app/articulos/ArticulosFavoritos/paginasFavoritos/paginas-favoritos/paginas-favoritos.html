@@ -1,14 +1,22 @@
 <h2>Articulos Favoritos</h2>
 <button routerLink="/">Volver</button>
 
-@for (articulo of _FavoritosArticulosService.ArticulosFavoritos(); track articulo.id){
-    <div>
-    <h3>{{ articulo.title }}</h3>
-    <p>{{ articulo.summary }}</p>
+@if (_FavoritosArticulosService.ArticulosFavoritos().length === 0){
+    <h2>No tienes favoritos actualmente</h2>
+}
+@else{
 
-    <button (click)="removeFavoritoArticulo(articulo.id)">
-      Eliminar
-    </button>
+  @for (articulo of _FavoritosArticulosService.ArticulosFavoritos(); track articulo.id){
+    <div>
+      <h3>{{ articulo.title }}</h3>
+      <p>{{ articulo.summary }}</p>
+      
+      <button (click)="removeFavoritoArticulo(articulo.id)">
+        Eliminar
+      </button>
+      
+    </div>
     
-  </div>
+}
+<h2><button (click)="downloadLocalStorage()">Descargar Local Storage</button></h2>
 }

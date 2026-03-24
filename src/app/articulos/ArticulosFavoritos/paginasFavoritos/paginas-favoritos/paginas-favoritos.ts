@@ -17,4 +17,8 @@ export class PaginasFavoritos {
   removeFavoritoArticulo(idFavorito : string){
     this._FavoritosArticulosService.removeFavoritoArticulo(idFavorito);
   }
+
+  downloadLocalStorage(){
+    this._FavoritosArticulosService.download()
+  }
 }
