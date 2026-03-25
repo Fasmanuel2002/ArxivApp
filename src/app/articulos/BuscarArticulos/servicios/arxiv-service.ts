@@ -33,10 +33,14 @@ export class ArxivService {
       let entries_xml = parsed.feed.entry
       let entries: ArxivOut[] = entries_xml.map((entries: any) => {
 
-        let authors = Array.isArray(entries.author)
-          ? entries.author.map((a: any) => a.name)
-          : [entries.author?.name]
-          
+        let authors;
+
+        if (Array.isArray(entries.author)) {
+          authors = entries.author.map((a: any) => a.name);
+        } else {
+          authors = [entries.author?.name];
+        } 
+        
         return {
           id: entries.id,
           title: entries.title,

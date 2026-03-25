@@ -26,6 +26,11 @@ export class FavoritosService {
   })
 
   addArticuloFavorito(articulo : ArxivOut){
+    const favoritosArticulos = this.ArticulosFavoritos()
+    if (favoritosArticulos.find(x => x.id === articulo.id)){
+      console.log("No puedes anañdir este contenido")
+      return
+    }
     this.ArticulosFavoritos.update(listaActualArticulos => [...listaActualArticulos, articulo])
   }
   
