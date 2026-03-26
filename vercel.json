@@ -1,5 +1,14 @@
 {
-  "devCommand": "ng serve --proxy-config proxy.conf.json --port $PORT",
-  "buildCommand": "ng build",
-  "outputDirectory": "dist/arxiv-app"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "angular",
+  "rewrites": [
+    {
+      "source": "/arxiv/:path*",
+      "destination": "https://export.arxiv.org/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
