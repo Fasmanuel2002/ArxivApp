@@ -31,6 +31,12 @@ export class ArxivService {
       let parsed = this.parser.parse(xml)
 
       let entries_xml = parsed.feed.entry
+      if (!entries_xml) {
+        return {
+          Response: true,
+          entries: []
+        }
+      }
       let entries: ArxivOut[] = entries_xml.map((entries: any) => {
 
         let authors;

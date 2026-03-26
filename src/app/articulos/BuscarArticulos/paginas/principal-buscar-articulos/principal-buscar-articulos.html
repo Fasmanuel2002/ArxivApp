@@ -6,7 +6,6 @@
   <button type="button" (click)="buscarArticulo(query)">Buscar</button>
   <button routerLink="/">Volver</button>
 </div>
-
 @if (resultado(); as data) {
 
   @if(data.Response){
@@ -19,19 +18,28 @@
           <h3>Artículos encontrados de {{ query }}</h3>
         </header>
 
-        @for(articulos_encotrados of data.entries; track articulos_encotrados.id){
-          <div class="datos">
-            <h2>{{ articulos_encotrados.title }}</h2>
-            <p><strong>Autores:</strong>
-              {{ articulos_encotrados.authors}}
-            </p>
-            <p>{{ articulos_encotrados.summary}}</p>
-            <a [href]="articulos_encotrados.id" target="_blank">
-              Ver artículo
-            </a>
-            <button type="button" (click)="toggleFavortito(articulos_encotrados)">AnadirFavorito</button>
-          </div>
+        @if(data.entries.length > 0){
+
+          @for(articulos_encotrados of data.entries; track articulos_encotrados.id){
+            <div class="datos">
+              <h2>{{ articulos_encotrados.title }}</h2>
+              <p><strong>Autores:</strong>
+                {{ articulos_encotrados.authors}}
+              </p>
+              <p>{{ articulos_encotrados.summary}}</p>
+              <a [href]="articulos_encotrados.id" target="_blank">
+                Ver artículo
+              </a>
+              <button type="button" (click)="toggleFavortito(articulos_encotrados)">
+                AnadirFavorito
+              </button>
+            </div>
+          }
+
+        } @else {
+          <h1>No existe este articulo</h1>
         }
+
       </section>
 
     </div>
