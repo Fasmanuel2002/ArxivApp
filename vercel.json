@@ -1,0 +1,5 @@
+{
+  "devCommand": "ng serve --proxy-config proxy.conf.json --port $PORT",
+  "buildCommand": "ng build",
+  "outputDirectory": "dist/arxiv-app"
+}
