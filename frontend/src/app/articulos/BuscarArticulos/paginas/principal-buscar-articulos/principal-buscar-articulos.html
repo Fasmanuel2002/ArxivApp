@@ -1,72 +1,89 @@
-<h2>Listado de Artículos</h2>
+<main class="page">
+  <header class="page__header">
+    <div>
+      <p class="eyebrow">Consulta en ArXiv</p>
+      <h1>Buscar articulos</h1>
+    </div>
+    <button class="secondary" routerLink="/">Volver</button>
+  </header>
 
-<div class="search">
-  <label for="titulo">Título</label>
-  <input type="text" id="titulo" [(ngModel)]="query"/>
-  <button type="button" (click)="buscarArticulo(query)" [disabled]="cargando()">Buscar</button>
-  <button routerLink="/">Volver</button>
-</div>
-@if (error(); as mensajeError) {
-  <div class="error-msg">
-    <p>{{ mensajeError }}</p>
-  </div>
-}
-@if (_FavoritosArticulosService.error(); as mensajeFavoritosError) {
-  <div class="error-msg">
-    <p>{{ mensajeFavoritosError }}</p>
-  </div>
-}
-@if (cargando()) {
-  <p>Buscando articulos...</p>
-}
-@if (resultado(); as data) {
+  <section class="search">
+    <label for="titulo">Titulo o palabra clave</label>
+    <div class="search__row">
+      <input
+        type="text"
+        id="titulo"
+        [(ngModel)]="query"
+        placeholder="Ejemplo: quantum computing"
+        (keyup.enter)="buscarArticulo(query)"
+      />
+      <button type="button" (click)="buscarArticulo(query)" [disabled]="cargando()">Buscar</button>
+    </div>
+  </section>
 
-  @if(data.Response){
+  @if (error(); as mensajeError) {
+    <div class="error-msg">
+      <p>{{ mensajeError }}</p>
+    </div>
+  }
+  @if (_FavoritosArticulosService.error(); as mensajeFavoritosError) {
+    <div class="error-msg">
+      <p>{{ mensajeFavoritosError }}</p>
+    </div>
+  }
+  @if (cargando()) {
+    <p class="loading">Buscando articulos...</p>
+  }
 
-    <div class="Articulo">
+  @if (resultado(); as data) {
 
-      <section class="card">
+    @if(data.Response){
 
-        <header class="card-header">
-          <h3>Artículos encontrados de {{ ultimaBusqueda() }}</h3>
+      <section class="results">
+
+        <header class="results__header">
+          <h2>Resultados de {{ ultimaBusqueda() }}</h2>
+          <span>{{ data.entries.length }} encontrados</span>
         </header>
 
-        @if(data.entries.length > 0){
+          @if(data.entries.length > 0){
 
-          @for(articulos_encotrados of data.entries; track articulos_encotrados.id){
-            <div class="datos">
-              <h2>{{ articulos_encotrados.title }}</h2>
-              <p><strong>Autores:</strong>
-                {{ articulos_encotrados.authors}}
-              </p>
-              <p>{{ articulos_encotrados.summary}}</p>
-              <a [href]="articulos_encotrados.id" target="_blank">
-                Ver artículo
-              </a>
-              <button type="button" (click)="toggleFavortito(articulos_encotrados)">
-                Anadir favorito
-              </button>
-            </div>
+            @for(articulos_encotrados of data.entries; track articulos_encotrados.id){
+              <article class="article-card">
+                <h3>{{ articulos_encotrados.title }}</h3>
+                <p class="authors"><strong>Autores:</strong> {{ articulos_encotrados.authors.join(', ') }}</p>
+                <p class="summary">{{ articulos_encotrados.summary }}</p>
+                <div class="article-card__actions">
+                  <a [href]="articulos_encotrados.id" target="_blank">Ver articulo</a>
+                  @if (articulos_encotrados.pdfUrl) {
+                    <a [href]="articulos_encotrados.pdfUrl" target="_blank">PDF</a>
+                  }
+                  <button type="button" (click)="toggleFavortito(articulos_encotrados)">
+                    Guardar favorito
+                  </button>
+                </div>
+              </article>
+            }
+
+          } @else {
+            <p class="empty">No hay resultados para esa busqueda.</p>
           }
-
-        } @else {
-          <h1>No existe este articulo</h1>
-        }
 
       </section>
 
-    </div>
+    } @else {
+
+      <div class="error-msg">
+        <p>{{ data.Error }}</p>
+      </div>
+
+    }
 
   } @else {
 
-    <div class="error-msg">
-      <p>{{ data.Error }}</p>
+    <div class="empty">
+      <p>Realiza una busqueda para ver resultados.</p>
     </div>
 
   }
-
-} @else {
-
-  <p>Realiza una búsqueda para ver resultados.</p>
-
-}
+</main>

@@ -1,30 +1,64 @@
-<h2>Articulos Favoritos</h2>
-<button routerLink="/">Volver</button>
-
-@if (_FavoritosArticulosService.cargando()){
-    <p>Cargando favoritos...</p>
-}
-
-@if (_FavoritosArticulosService.error(); as mensajeError){
-    <p>{{ mensajeError }}</p>
-}
-
-@if (_FavoritosArticulosService.ArticulosFavoritos().length === 0){
-    <h2>No tienes favoritos actualmente</h2>
-}
-@else{
-
-  @for (articulo of _FavoritosArticulosService.ArticulosFavoritos(); track articulo.id){
+<main class="page">
+  <header class="page__header">
     <div>
-      <h3>{{ articulo.title }}</h3>
-      <p>{{ articulo.summary }}</p>
-      
-      <button (click)="removeFavoritoArticulo(articulo.id)">
-        Eliminar
-      </button>
-      
+      <p class="eyebrow">Biblioteca personal</p>
+      <h1>Articulos favoritos</h1>
     </div>
-    
-}
-<h2><button (click)="downloadLocalStorage()">Descargar Local Storage</button></h2>
-}
+    <div class="page__actions">
+      <button class="secondary" routerLink="/">Volver</button>
+      <button type="button" (click)="downloadLocalStorage()">
+        Descargar JSON
+      </button>
+    </div>
+  </header>
+
+  @if (_FavoritosArticulosService.cargando()){
+      <p class="loading">Cargando favoritos...</p>
+  }
+
+  @if (_FavoritosArticulosService.error(); as mensajeError){
+      <div class="error-msg">
+        <p>{{ mensajeError }}</p>
+      </div>
+  }
+
+  @if (_FavoritosArticulosService.ArticulosFavoritos().length === 0){
+      <div class="empty">
+        <p>No tienes favoritos guardados todavia.</p>
+      </div>
+  }
+  @else{
+    <section class="favorites-list">
+      @for (articulo of _FavoritosArticulosService.ArticulosFavoritos(); track articulo.id){
+        <article class="favorite-card">
+          <div class="favorite-card__content">
+            <h2>{{ articulo.title }}</h2>
+            <p class="authors">{{ articulo.authors.join(', ') }}</p>
+            <p class="summary">{{ articulo.summary }}</p>
+
+            <label [for]="'nota-' + $index">Nota personal</label>
+            <textarea
+              [id]="'nota-' + $index"
+              [(ngModel)]="articulo.comment"
+              rows="3"
+              placeholder="Ejemplo: revisar para el apartado de redes neuronales"
+            ></textarea>
+          </div>
+
+          <div class="favorite-card__actions">
+            <a [href]="articulo.id" target="_blank">Abrir</a>
+            @if (articulo.pdfUrl) {
+              <a [href]="articulo.pdfUrl" target="_blank">PDF</a>
+            }
+            <button type="button" (click)="guardarComentario(articulo)">
+              Guardar nota
+            </button>
+            <button class="danger" type="button" (click)="removeFavoritoArticulo(articulo.id)">
+              Eliminar
+            </button>
+          </div>
+        </article>
+      }
+    </section>
+  }
+</main>

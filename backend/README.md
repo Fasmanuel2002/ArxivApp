@@ -8,6 +8,7 @@ Servidor Node/Express para guardar favoritos de ArXiv en MongoDB Atlas.
 2. En `Network Access`, permite `0.0.0.0/0` para aceptar conexiones desde cualquier IP.
 3. Copia la cadena de conexion que tambien puedes usar en MongoDB Compass.
 4. Crea `backend/.env` tomando como base `backend/.env.example`.
+5. Ejecuta `npm run build:frontend` y despues `npm start` para servir cliente y API juntos.
 
 ## Scripts
 

@@ -135,4 +135,28 @@ describe('favorites API', () => {
       assert.match(body.message, /Faltan campos obligatorios/);
     });
   });
+
+  it('updates a favorite comment', async () => {
+    await withServer(async (baseUrl) => {
+      const favorite = createFavorite();
+      await fetch(`${baseUrl}/api/favoritos`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(favorite),
+      });
+
+      const updated = await fetch(
+        `${baseUrl}/api/favoritos/${encodeURIComponent(favorite.id)}`,
+        {
+          method: 'PUT',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ comment: 'Leer para el marco teorico' }),
+        },
+      );
+
+      const body = await updated.json();
+      assert.equal(updated.status, 200);
+      assert.equal(body.data.comment, 'Leer para el marco teorico');
+    });
+  });
 });
