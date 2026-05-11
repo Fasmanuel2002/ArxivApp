@@ -14,7 +14,6 @@ describe('FavoritosService', () => {
     });
     service = TestBed.inject(FavoritosService);
     httpTesting = TestBed.inject(HttpTestingController);
-    httpTesting.expectOne('/api/favoritos').flush({ data: [], message: 'ok' });
   });
 
   afterEach(() => {

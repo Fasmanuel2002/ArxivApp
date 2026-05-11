@@ -1,9 +1,15 @@
-<header>
-    <h1>Arxiv App</h1>
-<nav>
-    <ul>
-        <li><a [routerLink]="['/articulos/BuscarArticulos']">Buscar Articulos</a></li>
-        <li><a [routerLink]="['/articulos/ArticulosFavoritos']">Gestionar Favoritos</a>
-    </ul>
-</nav>
-</header>
+<main class="home">
+  <section class="home__intro">
+    <img src="assets/ArXiv_logo_2022.png" alt="ArXiv" />
+    <div>
+      <p class="eyebrow">Proyecto MEAN</p>
+      <h1>ArXiv App</h1>
+      <p class="lead">Busca articulos academicos y guarda una lista de favoritos en MongoDB.</p>
+    </div>
+  </section>
+
+  <nav class="home__actions" aria-label="Navegacion principal">
+    <a [routerLink]="['/articulos/BuscarArticulos']">Buscar articulos</a>
+    <a [routerLink]="['/articulos/ArticulosFavoritos']">Gestionar favoritos</a>
+  </nav>
+</main>

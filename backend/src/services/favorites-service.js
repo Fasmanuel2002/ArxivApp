@@ -93,7 +93,13 @@ class FavoritesService {
     }
 
     for (const field of OPTIONAL_STRING_FIELDS) {
-      if (body[field] !== undefined && body[field] !== null && body[field] !== '') {
+      if (field === 'comment' && body[field] !== undefined && body[field] !== null) {
+        if (typeof body[field] !== 'string') {
+          throw new ApiError(400, 'comment debe ser texto.');
+        }
+
+        favorite[field] = body[field].trim();
+      } else if (body[field] !== undefined && body[field] !== null && body[field] !== '') {
         favorite[field] = this.cleanString(body[field], field);
       }
     }

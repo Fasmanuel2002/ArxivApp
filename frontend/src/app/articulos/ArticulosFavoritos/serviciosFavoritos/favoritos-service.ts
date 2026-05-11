@@ -19,10 +19,6 @@ export class FavoritosService {
   cargando = signal(false);
   error = signal<string | null>(null);
 
-  constructor() {
-    this.cargarArticulos();
-  }
-
   cargarArticulos() {
     this.cargando.set(true);
     this.error.set(null);
@@ -78,19 +74,42 @@ export class FavoritosService {
       });
   }
 
-  download(){
-    const favoritosArticulos = this.ArticulosFavoritos()
+  updateComentarioArticulo(articulo: ArxivOut) {
+    const articuloActualizado = {
+      ...articulo,
+      comment: articulo.comment?.trim() ?? '',
+    };
 
-    const json = JSON.stringify(favoritosArticulos)
-    
-    const enlace = document.createElement('a')
+    this.error.set(null);
+    this.httpClient
+      .put<ApiResponse<ArxivOut>>(
+        `${environment.favoritosApiUrl}/${encodeURIComponent(articulo.id)}`,
+        articuloActualizado,
+      )
+      .subscribe({
+        next: (response) => {
+          this.ArticulosFavoritos.update((listaActualArticulos) =>
+            listaActualArticulos.map((favorito) =>
+              favorito.id === articulo.id ? response.data : favorito,
+            ),
+          );
+        },
+        error: (error) => this.error.set(this.obtenerMensajeError(error)),
+      });
+  }
 
-    enlace.href = "data:application/json;charset=utf-8," + encodeURIComponent(json)
+  download() {
+    const favoritosArticulos = this.ArticulosFavoritos();
+
+    const json = JSON.stringify(favoritosArticulos, null, 2);
     
-    enlace.download = "favoritos.json";
+    const enlace = document.createElement('a');
+
+    enlace.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
+    
+    enlace.download = 'favoritos.json';
 
     enlace.click();
-  
   }
 
   private obtenerMensajeError(error: unknown) {

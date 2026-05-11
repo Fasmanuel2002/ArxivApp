@@ -20,7 +20,6 @@ describe('PrincipalBuscarArticulos', () => {
     fixture = TestBed.createComponent(PrincipalBuscarArticulos);
     component = fixture.componentInstance;
     httpTesting = TestBed.inject(HttpTestingController);
-    httpTesting.expectOne('/api/favoritos').flush({ data: [], message: 'ok' });
     await fixture.whenStable();
   });
 
