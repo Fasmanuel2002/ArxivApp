@@ -1,6 +1,14 @@
 <h2>Articulos Favoritos</h2>
 <button routerLink="/">Volver</button>
 
+@if (_FavoritosArticulosService.cargando()){
+    <p>Cargando favoritos...</p>
+}
+
+@if (_FavoritosArticulosService.error(); as mensajeError){
+    <p>{{ mensajeError }}</p>
+}
+
 @if (_FavoritosArticulosService.ArticulosFavoritos().length === 0){
     <h2>No tienes favoritos actualmente</h2>
 }

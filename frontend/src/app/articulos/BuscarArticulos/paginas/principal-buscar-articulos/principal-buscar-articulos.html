@@ -3,9 +3,22 @@
 <div class="search">
   <label for="titulo">Título</label>
   <input type="text" id="titulo" [(ngModel)]="query"/>
-  <button type="button" (click)="buscarArticulo(query)">Buscar</button>
+  <button type="button" (click)="buscarArticulo(query)" [disabled]="cargando()">Buscar</button>
   <button routerLink="/">Volver</button>
 </div>
+@if (error(); as mensajeError) {
+  <div class="error-msg">
+    <p>{{ mensajeError }}</p>
+  </div>
+}
+@if (_FavoritosArticulosService.error(); as mensajeFavoritosError) {
+  <div class="error-msg">
+    <p>{{ mensajeFavoritosError }}</p>
+  </div>
+}
+@if (cargando()) {
+  <p>Buscando articulos...</p>
+}
 @if (resultado(); as data) {
 
   @if(data.Response){
@@ -15,7 +28,7 @@
       <section class="card">
 
         <header class="card-header">
-          <h3>Artículos encontrados de {{ query }}</h3>
+          <h3>Artículos encontrados de {{ ultimaBusqueda() }}</h3>
         </header>
 
         @if(data.entries.length > 0){
@@ -31,7 +44,7 @@
                 Ver artículo
               </a>
               <button type="button" (click)="toggleFavortito(articulos_encotrados)">
-                AnadirFavorito
+                Anadir favorito
               </button>
             </div>
           }

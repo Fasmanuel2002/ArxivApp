@@ -13,7 +13,7 @@ import { XMLParser } from 'fast-xml-parser';
 export class ArxivService {
 
   private httpClient = inject(HttpClient)
-  private parser = new XMLParser()
+  private parser = new XMLParser({ ignoreAttributes: false })
 
   buscarArticulos(query: string): Observable<ArxivSuccess> {
 
@@ -37,7 +37,10 @@ export class ArxivService {
           entries: []
         }
       }
-      let entries: ArxivOut[] = entries_xml.map((entries: any) => {
+
+      const entriesList = Array.isArray(entries_xml) ? entries_xml : [entries_xml];
+
+      let entries: ArxivOut[] = entriesList.map((entries: any) => {
 
         let authors;
 
@@ -47,13 +50,21 @@ export class ArxivService {
           authors = [entries.author?.name];
         } 
         
+        const links = Array.isArray(entries.link)
+          ? entries.link
+          : entries.link
+            ? [entries.link]
+            : [];
+        const pdfLink = links.find((link: any) => link['@_title'] === 'pdf');
+
         return {
           id: entries.id,
           title: entries.title,
           summary: entries.summary,
           authors,
           published: entries.published,
-          updated: entries.updated
+          updated: entries.updated,
+          pdfUrl: pdfLink?.['@_href']
         }
 
       })

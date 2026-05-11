@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { MenuPrincipal } from './menu-principal';
 
@@ -8,7 +9,8 @@ describe('MenuPrincipal', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MenuPrincipal]
+      imports: [MenuPrincipal],
+      providers: [provideRouter([])]
     })
     .compileComponents();
 
