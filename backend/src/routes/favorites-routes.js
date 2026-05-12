@@ -1,12 +1,15 @@
 const express = require('express');
-const { FavoritesService } = require('../services/favorites-service');
+const FavoritesService = require('../services/favorites-service');
 
-function createFavoritesRouter(service = new FavoritesService()) {
+function createFavoritesRouter() {
+  
+  
   const router = express.Router();
+  const favoritoService = new FavoritesService();
 
   router.get('/', async (req, res, next) => {
     try {
-      const favorites = await service.getFavorites();
+      const favorites = await favoritoService.getFavorites();
       res.status(200).json({
         data: favorites,
         message: 'favoritos devueltos con exito',
@@ -18,7 +21,7 @@ function createFavoritesRouter(service = new FavoritesService()) {
 
   router.post('/', async (req, res, next) => {
     try {
-      const favorite = await service.createFavorite(req.body);
+      const favorite = await favoritoService.createFavorite(req.body);
       res.status(201).json({
         data: favorite,
         message: 'favorito creado con exito',
@@ -29,8 +32,10 @@ function createFavoritesRouter(service = new FavoritesService()) {
   });
 
   router.put('/:articleId', async (req, res, next) => {
+    
+    
     try {
-      const favorite = await service.updateFavorite(req.params.articleId, req.body);
+      const favorite = await favoritoService.updateFavorite(req.params.articleId, req.body);
       res.status(200).json({
         data: favorite,
         message: 'favorito actualizado con exito',
@@ -42,7 +47,7 @@ function createFavoritesRouter(service = new FavoritesService()) {
 
   router.delete('/:articleId', async (req, res, next) => {
     try {
-      const favorite = await service.deleteFavorite(req.params.articleId);
+      const favorite = await favoritoService.deleteFavorite(req.params.articleId);
       res.status(200).json({
         data: favorite,
         message: 'favorito borrado con exito',
