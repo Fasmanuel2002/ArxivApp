@@ -20,8 +20,7 @@ class FavoritesService {
             return favoriteCreated || [];
         } catch (error) {
               if(error.code === 11000){
-                throw new ApiError(409,'El articulo ya esta guardado en favoritos.'
-                );
+                throw new ApiError(409,'El articulo ya esta guardado en favoritos.');
             }
             throw error;
         }
@@ -56,8 +55,10 @@ class FavoritesService {
 
     cleanFavorite(body, { partial = false } = {}){
         const requiredFields = ['id','title','summary','authors','published','updated'];
-
+        
         const optionalFields = ['pdfUrl','primaryCategory','doiUrl','journalRef','comment'];
+        
+        const favorite = {};
         
         if(!body || typeof body !== 'object'){
             throw new ApiError(400,  ' debe ser un objeto ');
@@ -73,11 +74,9 @@ class FavoritesService {
         });
 
         if(missingFields.length > 0){
-            throw new ApiError(400,`Faltan los  campos obligatorios: ${missingFields.join(', ')}.`
-            );
+            throw new ApiError(400,`Faltan los  campos obligatorios: ${missingFields.join(', ')}.`);
         }
 
-        const favorite = {};
 
         if(body.id !== null){
           favorite.id = this.cleanString(body.id, 'id');
@@ -106,9 +105,7 @@ class FavoritesService {
         if(body.categories !== undefined){
             if(body.categories !== undefined){
               if(Array.isArray(body.categories)){
-                favorite.categories = body.categories.map((category) =>
-                this.cleanString(category, 'categories')
-              );
+                favorite.categories = body.categories.map((category) => this.cleanString(category, 'categories'));
             } else {
               favorite.categories = [];
             }

@@ -33,15 +33,11 @@ function createApp(){
         createFavoritesRouter(favoritesService)
     );
 
-
     app.use('/api', (req, res, next) => {
         next(new ApiError(404, 'Ruta no encontrada'));
     });
 
-
     app.use('/arxiv', arxivProxy);
-
-
     const frontendDist = config.frontendDist;
 
     if(frontendDist){
@@ -54,14 +50,10 @@ function createApp(){
 
             app.use((req, res, next) => {
 
-                const wantsHtml =
-                    req.method === 'GET' &&
-                    req.accepts('html');
-
+                const wantsHtml = req.method === 'GET' && req.accepts('html');
                 if(!wantsHtml){
                     return next();
                 }
-
                 return res.sendFile(indexPath);
 
             });
