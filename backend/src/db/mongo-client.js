@@ -3,28 +3,25 @@ const { config } = require('../config');
 const { ApiError } = require('../errors');
 
 class MongoConnection {
-  constructor(uri = config.mongodbUri, dbName = config.mongodbDbName) {
+  constructor(uri = config.mongodbUri, db_name = config.mongodbDbName) {
     this.uri = uri;
-    this.dbName = dbName;
+    this.db_name = db_name;
     this.client = null;
     this.connection = null;
   }
 
   async db() {
     if (!this.uri) {
-      throw new ApiError(
-        503,
-        'Falta MONGODB_URI. Crea backend/.env con la cadena de MongoDB Atlas.',
-      );
+    throw new ApiError(503,'Falta el MONGODB_URI para conectarte a MONGO atlas compass!. Crea backend/.env con la cadena de MongoDB Atlas.',);
     }
 
     if (!this.connection) {
       this.client = new MongoClient(this.uri);
+      
       this.connection = this.client.connect();
     }
-
     const client = await this.connection;
-    return client.db(this.dbName);
+    return client.db(this.db_name);
   }
 
   async close() {
