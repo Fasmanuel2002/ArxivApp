@@ -67,6 +67,8 @@ function createApp(){
 
 
 async function arxivProxy(req, res, next){
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
     try {
         const pathWithQuery =
             req.originalUrl.replace(/^\/arxiv/, '') || '/';
@@ -74,19 +76,20 @@ async function arxivProxy(req, res, next){
             pathWithQuery,
             'https://export.arxiv.org'
         );
-        const response = await fetch(target);
+        const response = await fetch(target, { signal: controller.signal });
         const body = Buffer.from(
             await response.arrayBuffer()
         );
-       const contentType =
+        const contentType =
             response.headers.get('content-type');
         if(contentType){
             res.setHeader('content-type', contentType);
         }
         res.status(response.status).send(body);
     } catch (error) {
-
         next(new ApiError(502,'No se pudo conectar con Arxiv'));
+    } finally {
+        clearTimeout(timeoutId);
     }
 }
 

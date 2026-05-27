@@ -7,6 +7,8 @@
   "/arxiv": {
     "target": "http://localhost:3000",
     "secure": false,
-    "changeOrigin": true
+    "changeOrigin": true,
+    "timeout": 90000,
+    "proxyTimeout": 90000
   }
 }
